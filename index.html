@@ -9,7 +9,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
   body { font-size: 14px; }
+  .tab-btn { color: #475569; }
+  .leg-label span { display: inline-block; transform: translate(-50%, -50%); white-space: nowrap; background: rgba(255,255,255,.92); border: 2px solid; border-radius: 9999px; padding: 0 6px; font: 700 10px/16px system-ui; color: #0f172a; box-shadow: 0 1px 2px rgba(0,0,0,.25); }
+  .hide-labels .leg-label { display: none; }
+  .tab-btn.active { background: #2563eb; color: #fff; }
+  .measure-on #map { cursor: crosshair; }
+  .m-btn { background: #fff; width: 34px; height: 34px; font-size: 17px; line-height: 34px; text-align: center; cursor: pointer; border-radius: 4px; }
+  .m-btn.on { background: #fde047; }
+  @media print { #panel-map[hidden] { display: block !important; } }
   /* Full-screen map: CSS mode works on every phone (iPhone Safari has no element full-screen API). */
+  #map.map-stretch { height: calc(100dvh - 64px) !important; }
   #map.map-full { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; width: auto !important; height: auto !important; margin: 0 !important; border-radius: 0 !important; z-index: 9999; }
   body.map-open { overflow: hidden; }
   .fs-btn { background: #fff; width: 34px; height: 34px; font-size: 18px; line-height: 34px; text-align: center; cursor: pointer; border-radius: 4px; }
@@ -29,6 +38,13 @@
     <h1 class="text-2xl font-bold">🇫🇮 Helsinki Day Trip</h1>
     <p class="mt-1 text-sky-100"><b>Wednesday 21 Oct 2026</b> · Aman &amp; Sushma · from Tallinn by ferry</p>
   </header>
+  <nav id="tabs" class="no-print sticky top-0 z-[1100] flex items-center gap-1 rounded-xl bg-white/95 backdrop-blur border border-slate-200 p-1 shadow-sm">
+    <button data-tab="plan" class="tab-btn h-8 px-3 rounded-lg text-sm font-semibold">📋 Plan</button>
+    <button data-tab="map" class="tab-btn h-8 px-3 rounded-lg text-sm font-semibold">🗺️ Map</button>
+    <span id="offlineStatus" class="ml-auto pr-2 text-xs text-slate-500"></span>
+  </nav>
+
+  <div id="panel-plan" class="space-y-4">
 
   <!-- Tickets -->
   <section class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -96,31 +112,6 @@
     <div id="flow" class="px-4 py-4"></div>
   </section>
 
-  <!-- Map -->
-  <section class="rounded-xl bg-white shadow-sm border border-slate-200">
-    <h2 class="px-4 py-2 font-bold text-white bg-teal-600 rounded-t-xl">📍 Map of the day + distances</h2>
-    <div class="px-4 pt-2 flex flex-wrap items-center gap-3 text-xs">
-      <label class="no-print inline-flex items-center gap-1.5 font-semibold"><input id="optToggle" type="checkbox" checked> Show optional stops</label>
-      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-green-600"></span>walk</span>
-      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-purple-600"></span>tram</span>
-      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-amber-500"></span>Bolt</span>
-      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-sky-500"></span>ferry</span>
-      <span class="inline-flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full border-2 border-dashed border-slate-400 bg-white"></span>optional</span>
-    </div>
-    <div id="tramLegend" class="px-4 pt-2 flex flex-wrap items-center gap-1.5 text-xs"></div>
-    <div class="px-4 pt-1 text-xs text-slate-500">Thin coloured lines = <b>real tram lines</b>, small dots = <b>tram stops</b>. Tap a line or a dot for its number and name. Tap a tram option in the table to show where to get on and off. Toggle trams with the layers button on the map.</div>
-    <div id="map" class="mx-4 my-2 rounded-lg border border-slate-200" style="height: 460px;"></div>
-    <div class="px-4 pb-1 text-xs text-slate-500">Tap a number for the stop name. Distances are measured on the map; real walking routes are usually about 30% longer, which the walk time below already includes.</div>
-    <div class="px-4 pb-3 overflow-x-auto">
-      <table class="w-full text-xs tabular-nums">
-        <thead class="text-slate-500 border-b border-slate-200">
-          <tr><th class="py-1 text-left">#</th><th class="py-1 text-left">From → To</th><th class="py-1 text-left">How</th><th class="py-1 text-right">Distance</th><th class="py-1 text-right">Walk time</th><th class="py-1 text-left pl-3">🚋 Tram option (free)</th><th class="py-1 text-right no-print">Maps</th></tr>
-        </thead>
-        <tbody id="legs" class="divide-y divide-slate-100"></tbody>
-        <tfoot id="legsTotal" class="font-bold border-t border-slate-300"></tfoot>
-      </table>
-    </div>
-  </section>
 
   <a class="no-print block text-center rounded-lg px-4 py-2 font-semibold text-white bg-emerald-600 hover:bg-emerald-700"
      href="https://www.google.com/maps/dir/West+Harbour+Terminal+2+Helsinki/Temppeliaukio+Church/Kamppi+Chapel/Oodi+Helsinki/Esplanadi+Helsinki/Old+Market+Hall+Helsinki/Suomenlinna/Senate+Square+Helsinki/Uspenski+Cathedral/Katajanokka+Terminal+Helsinki"
@@ -186,6 +177,36 @@
       <li>☐ Alarm for about 05:45; Bolt at 06:30</li>
     </ul>
   </section>
+
+  </div>
+  <div id="panel-map" class="space-y-3" hidden>
+  <!-- Map -->
+  <section class="rounded-xl bg-white shadow-sm border border-slate-200">
+    <h2 class="px-4 py-2 font-bold text-white bg-teal-600 rounded-t-xl">📍 Map of the day + distances</h2>
+    <div class="px-4 pt-2 flex flex-wrap items-center gap-3 text-xs">
+      <label class="no-print inline-flex items-center gap-1.5 font-semibold"><input id="optToggle" type="checkbox" checked> Show optional stops</label>
+      <button id="stretchBtn" class="no-print h-6 px-2 rounded border border-slate-300 bg-white font-semibold">↕ Stretch map to page</button>
+      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-green-600"></span>walk</span>
+      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-purple-600"></span>tram</span>
+      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-amber-500"></span>Bolt</span>
+      <span class="inline-flex items-center gap-1"><span class="inline-block w-4 h-1 rounded bg-sky-500"></span>ferry</span>
+      <span class="inline-flex items-center gap-1"><span class="inline-block w-3 h-3 rounded-full border-2 border-dashed border-slate-400 bg-white"></span>optional</span>
+    </div>
+    <div id="tramLegend" class="px-4 pt-2 flex flex-wrap items-center gap-1.5 text-xs"></div>
+    <div class="px-4 pt-1 text-xs text-slate-500">Thin coloured lines = <b>real tram lines</b>, small dots = <b>tram stops</b>. Tap a line or a dot for its number and name. Tap a tram option in the table to show where to get on and off. Toggle trams with the layers button on the map. <b>Zoom in</b> to see the distance and walk time on every line (e.g. "2→3 · 920 m · 12 min"). <b>📏 Measure:</b> tap the ruler button, then tap any two points (or stops) to get the distance between them; drag the pins to adjust.</div>
+    <div id="map" class="mx-4 my-2 rounded-lg border border-slate-200" style="height: calc(100dvh - 250px); min-height: 380px;"></div>
+    <div class="px-4 pb-1 text-xs text-slate-500">Tap a number for the stop name. Distances are measured on the map; real walking routes are usually about 30% longer, which the walk time below already includes.</div>
+    <div class="px-4 pb-3 overflow-x-auto">
+      <table class="w-full text-xs tabular-nums">
+        <thead class="text-slate-500 border-b border-slate-200">
+          <tr><th class="py-1 text-left">#</th><th class="py-1 text-left">From → To</th><th class="py-1 text-left">How</th><th class="py-1 text-right">Distance</th><th class="py-1 text-right">Walk time</th><th class="py-1 text-left pl-3">🚋 Tram option (free)</th><th class="py-1 text-right no-print">Maps</th></tr>
+        </thead>
+        <tbody id="legs" class="divide-y divide-slate-100"></tbody>
+        <tfoot id="legsTotal" class="font-bold border-t border-slate-300"></tfoot>
+      </table>
+    </div>
+  </section>
+  </div>
 
   <footer class="text-center text-xs text-slate-400 pb-4">Ferry times and prices are from the booking confirmations. Sight times and Bolt prices are estimates.</footer>
 </div>
@@ -373,6 +394,10 @@
       const gmode = mode === "walk" ? "walking" : mode === "bolt" ? "driving" : "transit";
       const gUrl = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(gq(prev))}&destination=${encodeURIComponent(gq(s))}&travelmode=${gmode}`;
       const dist = road < 1 ? `${Math.round(road * 1000 / 10) * 10} m` : `${road.toFixed(1)} km`;
+      // Label in the middle of each line: "1→2 · 920 m · 12 min".
+      const mid = [(prev.ll[0] + s.ll[0]) / 2, (prev.ll[1] + s.ll[1]) / 2];
+      L.marker(mid, { interactive: false, icon: L.divIcon({ className: "leg-label", iconSize: null,
+        html: `<span style="border-color:${LINE[mode]}">${n - 1}→${n} · ${mode === "ferry" ? "~" : ""}${dist}${walkMin ? " · " + walkMin + " min" : ""}</span>` }) }).addTo(layer);
       const tr = document.createElement("tr");
       if (s.optional || prev.optional) tr.className = "text-slate-500";
       tr.innerHTML =
@@ -431,9 +456,183 @@
   map.addControl(new FsControl());
   document.addEventListener("keydown", (e) => { if (e.key === "Escape" && mapEl.classList.contains("map-full")) setFull(false); });
   document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && mapEl.classList.contains("map-full")) setFull(false); });
+  const LABEL_MIN_ZOOM = 14;
+  const syncLabels = () => document.getElementById("map").classList.toggle("hide-labels", map.getZoom() < LABEL_MIN_ZOOM);
+  map.on("zoomend", syncLabels);
+  map.whenReady(syncLabels);
   const toggle = document.getElementById("optToggle");
   toggle.addEventListener("change", () => draw(toggle.checked));
   draw(true);
+</script>
+
+<script>
+  // ---- Tabs (remembered per phone; #map in the link opens the map) ----
+  const panels = { plan: document.getElementById("panel-plan"), map: document.getElementById("panel-map") };
+  let mapShownOnce = false;
+  function showTab(name) {
+    for (const [k, el] of Object.entries(panels)) el.hidden = k !== name;
+    document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
+    try { localStorage.setItem("hel-tab", name); } catch (e) {}
+    history.replaceState(null, "", name === "map" ? "#map" : location.pathname + location.search);
+    if (name === "map") {
+      setTimeout(() => {
+        map.invalidateSize();
+        if (!mapShownOnce) { map.fitBounds(layerBounds(), { padding: [30, 30] }); mapShownOnce = true; }
+      }, 50);
+    }
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll(".tab-btn").forEach((b) => b.addEventListener("click", () => showTab(b.dataset.tab)));
+  let startTab = "plan";
+  try { startTab = localStorage.getItem("hel-tab") || "plan"; } catch (e) {}
+  if (location.hash === "#map") startTab = "map";
+  showTab(startTab);
+  // The tram "show on map" buttons live in the map tab already; make sure the map is visible first.
+  const _showTram = showTram;
+  showTram = (o) => { if (panels.map.hidden) showTab("map"); setTimeout(() => _showTram(o), 80); };
+
+  // ---- Stretch: map fills the page under the tab bar; options stay one scroll up ----
+  const stretchBtn = document.getElementById("stretchBtn");
+  let sBtn;
+  function setStretch(on) {
+    mapEl.classList.toggle("map-stretch", on);
+    stretchBtn.textContent = on ? "↕ Normal map size" : "↕ Stretch map to page";
+    if (sBtn) sBtn.classList.toggle("on", on);
+    setTimeout(() => {
+      map.invalidateSize();
+      if (on) window.scrollTo({ top: mapEl.getBoundingClientRect().top + scrollY - document.getElementById("tabs").offsetHeight - 8 });
+    }, 60);
+  }
+  stretchBtn.addEventListener("click", () => setStretch(!mapEl.classList.contains("map-stretch")));
+  const StretchControl = L.Control.extend({
+    options: { position: "topright" },
+    onAdd() {
+      sBtn = L.DomUtil.create("div", "leaflet-bar m-btn");
+      sBtn.textContent = "↕";
+      sBtn.title = "Stretch map to the page";
+      L.DomEvent.disableClickPropagation(sBtn);
+      L.DomEvent.on(sBtn, "click", () => setStretch(!mapEl.classList.contains("map-stretch")));
+      return sBtn;
+    },
+  });
+  map.addControl(new StretchControl());
+
+  // ---- Measure: drop two pins anywhere, get the distance ----
+  const measureLayer = L.layerGroup().addTo(map);
+  let measuring = false, mPts = [];
+  let mBtn, mBox;
+  const MeasureControl = L.Control.extend({
+    options: { position: "topleft" },
+    onAdd() {
+      mBtn = L.DomUtil.create("div", "leaflet-bar m-btn");
+      mBtn.textContent = "📏";
+      mBtn.title = "Measure distance between two points";
+      L.DomEvent.disableClickPropagation(mBtn);
+      L.DomEvent.on(mBtn, "click", () => setMeasure(!measuring));
+      return mBtn;
+    },
+  });
+  map.addControl(new MeasureControl());
+  const BoxControl = L.Control.extend({
+    options: { position: "bottomleft" },
+    onAdd() {
+      mBox = L.DomUtil.create("div", "");
+      mBox.style.cssText = "background:#fff;padding:6px 8px;border-radius:8px;box-shadow:0 1px 4px rgba(0,0,0,.3);font:12px system-ui;max-width:260px;display:none";
+      L.DomEvent.disableClickPropagation(mBox);
+      return mBox;
+    },
+  });
+  map.addControl(new BoxControl());
+  function setMeasure(on) {
+    measuring = on;
+    mBtn.classList.toggle("on", on);
+    document.body.classList.toggle("measure-on", on);
+    if (!on) { measureLayer.clearLayers(); mPts = []; mBox.style.display = "none"; return; }
+    mBox.style.display = "block";
+    mBox.innerHTML = "📏 <b>Tap point A</b> on the map (or tap a stop).";
+  }
+  function pinIcon(t) {
+    return L.divIcon({ className: "", iconSize: [24, 24], iconAnchor: [12, 12],
+      html: `<div style="width:24px;height:24px;border-radius:50%;background:#facc15;border:2px solid #111;font:800 12px system-ui;display:flex;align-items:center;justify-content:center">${t}</div>` });
+  }
+  function renderMeasure() {
+    measureLayer.clearLayers();
+    mPts.forEach((p, i) => {
+      const mk = L.marker(p, { icon: pinIcon(i ? "B" : "A"), draggable: true }).addTo(measureLayer);
+      mk.on("drag", (e) => { mPts[i] = [e.latlng.lat, e.latlng.lng]; updateBox(); line && line.setLatLngs(mPts); });
+      mk.on("dragend", renderMeasure);
+    });
+    var line = mPts.length === 2 ? L.polyline(mPts, { color: "#111", weight: 3, dashArray: "6 6" }).addTo(measureLayer) : null;
+    updateBox();
+  }
+  function updateBox() {
+    if (mPts.length < 2) { mBox.innerHTML = "📏 <b>Tap point B</b>."; return; }
+    const d = km(mPts[0], mPts[1]), road = d * ROAD_FACTOR, min = Math.max(1, Math.round((road / WALK_KMH) * 60));
+    const fmt = (x) => (x < 1 ? `${Math.round(x * 100) * 10} m` : `${x.toFixed(2)} km`);
+    const g = `https://www.google.com/maps/dir/?api=1&origin=${mPts[0].join(",")}&destination=${mPts[1].join(",")}&travelmode=walking`;
+    mBox.innerHTML = `📏 <b>A → B</b>: ${fmt(d)} straight<br>🚶 about ${fmt(road)} on foot · <b>~${min} min</b><br>` +
+      `<a href="${g}" target="_blank" rel="noopener" style="color:#1d4ed8;text-decoration:underline">walk it in Google Maps</a> · ` +
+      `<a href="#" id="mClear" style="color:#b91c1c;text-decoration:underline">clear</a> · tap again for new A`;
+    document.getElementById("mClear").onclick = (e) => { e.preventDefault(); mPts = []; renderMeasure(); mBox.innerHTML = "📏 <b>Tap point A</b>."; };
+  }
+  function addMeasurePoint(ll) {
+    if (mPts.length === 2) mPts = [];
+    mPts.push(ll);
+    renderMeasure();
+  }
+  map.on("click", (e) => { if (measuring) addMeasurePoint([e.latlng.lat, e.latlng.lng]); });
+  // Tapping a plan stop or a tram stop also drops a pin while measuring.
+  const hookLayer = (lg) => lg.eachLayer((l) => l.getLatLng && l.on("click", (e) => { if (measuring) { l.closePopup && l.closePopup(); addMeasurePoint([e.latlng.lat, e.latlng.lng]); } }));
+  hookLayer(tramLayer);
+  const _draw = draw;
+  draw = (o) => { _draw(o); hookLayer(layer); };
+  hookLayer(layer);
+
+  // ---- Offline: service worker caches the page, scripts and map tiles ----
+  const statusEl = document.getElementById("offlineStatus");
+  const TILE_URL = (z, x, y) => `https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/${z}/${y}/${x}`;
+  // Areas saved ahead of time: the whole day's area up to zoom 16, the centre up to zoom 17.
+  const TILE_AREAS = [
+    { z: [11, 15], s: 60.120, w: 24.860, n: 60.200, e: 25.030 },
+    { z: [16, 16], s: 60.136, w: 24.895, n: 60.182, e: 25.000 },
+    { z: [17, 17], s: 60.160, w: 24.915, n: 60.177, e: 24.975 },
+  ];
+  const TILE_SET_VERSION = "tiles-v2";
+  function tileList() {
+    const out = [];
+    const tx = (lon, z) => Math.floor(((lon + 180) / 360) * 2 ** z);
+    const ty = (lat, z) => { const r = (lat * Math.PI) / 180; return Math.floor(((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2) * 2 ** z); };
+    for (const a of TILE_AREAS) for (let z = a.z[0]; z <= a.z[1]; z++)
+      for (let x = tx(a.w, z); x <= tx(a.e, z); x++) for (let y = ty(a.n, z); y <= ty(a.s, z); y++) out.push(TILE_URL(z, x, y));
+    return out;
+  }
+  async function saveTiles() {
+    let done = false;
+    try { done = localStorage.getItem("hel-tiles") === TILE_SET_VERSION; } catch (e) {}
+    if (done) { statusEl.textContent = "✅ Works offline"; return; }
+    const urls = tileList();
+    let n = 0, failed = 0;
+    const worker = async () => {
+      while (urls.length) {
+        const u = urls.pop();
+        try { const r = await fetch(u, { mode: "cors", credentials: "omit" }); if (!r.ok) failed++; } catch (e) { failed++; }
+        n++;
+        if (n % 10 === 0) statusEl.textContent = `⏳ Saving map for offline… ${n}/${n + urls.length}`;
+      }
+    };
+    await Promise.all(Array.from({ length: 6 }, worker));
+    if (failed === 0) { try { localStorage.setItem("hel-tiles", TILE_SET_VERSION); } catch (e) {} statusEl.textContent = "✅ Works offline"; }
+    else statusEl.textContent = `⚠️ Map partly saved (${failed} tiles missing). Reopen online to finish.`;
+  }
+  if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+    statusEl.textContent = "⏳ Preparing offline…";
+    navigator.serviceWorker.register("sw.js").then(() => navigator.serviceWorker.ready).then(() => {
+      if (navigator.serviceWorker.controller) saveTiles();
+      else navigator.serviceWorker.addEventListener("controllerchange", saveTiles, { once: true });
+    }).catch(() => { statusEl.textContent = "⚠️ Offline mode not available in this browser"; });
+  } else {
+    statusEl.textContent = location.protocol === "file:" ? "Offline: open the web link once" : "";
+  }
 </script>
 </body>
 </html>
