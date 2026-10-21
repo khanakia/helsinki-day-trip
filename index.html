@@ -18,7 +18,12 @@
   .m-btn.on { background: #fde047; }
   @media print { #panel-map[hidden] { display: block !important; } }
   /* Full-screen map: CSS mode works on every phone (iPhone Safari has no element full-screen API). */
-  #map.map-stretch { height: calc(100dvh - 64px) !important; }
+  /* Stretch: page goes edge to edge, map fills the screen height under the tab bar. */
+  #map.map-stretch { height: calc(100dvh - 56px) !important; margin: 0 !important; border-radius: 0 !important; border-left: 0; border-right: 0; }
+  body.map-stretched > div.max-w-3xl { max-width: none; padding-left: 0; padding-right: 0; }
+  body.map-stretched #panel-map > section { border-radius: 0; border-left: 0; border-right: 0; }
+  body.map-stretched #panel-map > section > h2 { border-radius: 0; }
+  body.map-stretched #tabs { border-radius: 0; }
   #map.map-full { position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; width: auto !important; height: auto !important; margin: 0 !important; border-radius: 0 !important; z-index: 9999; }
   body.map-open { overflow: hidden; }
   .fs-btn { background: #fff; width: 34px; height: 34px; font-size: 18px; line-height: 34px; text-align: center; cursor: pointer; border-radius: 4px; }
@@ -471,6 +476,7 @@
   let mapShownOnce = false;
   function showTab(name) {
     for (const [k, el] of Object.entries(panels)) el.hidden = k !== name;
+    if (name !== "map" && typeof setStretch === "function" && mapEl.classList.contains("map-stretch")) setStretch(false);
     document.querySelectorAll(".tab-btn").forEach((b) => b.classList.toggle("active", b.dataset.tab === name));
     try { localStorage.setItem("hel-tab", name); } catch (e) {}
     history.replaceState(null, "", name === "map" ? "#map" : location.pathname + location.search);
@@ -496,11 +502,12 @@
   let sBtn;
   function setStretch(on) {
     mapEl.classList.toggle("map-stretch", on);
+    document.body.classList.toggle("map-stretched", on);
     stretchBtn.textContent = on ? "↕ Normal map size" : "↕ Stretch map to page";
     if (sBtn) sBtn.classList.toggle("on", on);
     setTimeout(() => {
       map.invalidateSize();
-      if (on) window.scrollTo({ top: mapEl.getBoundingClientRect().top + scrollY - document.getElementById("tabs").offsetHeight - 8 });
+      if (on) window.scrollTo({ top: mapEl.getBoundingClientRect().top + scrollY - document.getElementById("tabs").offsetHeight });
     }, 60);
   }
   stretchBtn.addEventListener("click", () => setStretch(!mapEl.classList.contains("map-stretch")));
