@@ -118,6 +118,76 @@
   </section>
 
 
+  <!-- Tram guide -->
+  <section class="rounded-xl bg-white shadow-sm border border-slate-200">
+    <h2 class="px-4 py-2 font-bold text-white bg-pink-600 rounded-t-xl">🚋 Tram guide: where to get on and off</h2>
+    <div class="px-4 pt-3 text-sm space-y-1">
+      <div><b>Stop names are street names.</b> For example, <b>Sammonkatu</b> is the tram stop on Sammonkatu street, 2 min from the rock church. Stop signs show the Finnish name and the Swedish one under it (Sammonkatu / Sampogatan).</div>
+      <div><b>On the tram:</b> the screen inside shows the <b>next stop</b>, and it is announced. Press a <b>STOP button</b> before your stop. Count the stops below as you go.</div>
+      <div><b>All free</b> with your HSL day ticket. Nothing to tap.</div>
+    </div>
+
+    <div class="px-4 pt-4 font-bold text-slate-700">① 09:30 · West Harbour T2 → Temppeliaukio rock church <span class="text-xs font-normal text-slate-500">(free instead of Bolt)</span></div>
+    <div class="px-4 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      
+        <div class="rounded-lg border border-slate-200 p-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded px-2 py-0.5 text-white font-bold" style="background:#be123c">🚋 1T</span>
+            <span class="text-sm">toward <b>Käpylä</b> (shown on the tram's front)</span>
+            <span class="text-xs text-slate-500">· 12 stops</span>
+            <button class="no-print text-xs underline text-blue-700" onclick="showTram({ref:'1T',board:'Länsiterminaali 2',alight:'Sammonkatu'})">🗺 show on map</button>
+          </div>
+          <div class="mt-1 text-xs text-slate-600">🚶 0 min (stop is outside the terminal) → get on at <b>Länsiterminaali 2</b> · ride 12 stops · get off at <b>Sammonkatu</b> → 🚶 2 min (150 m) to <b>the rock church</b><br><b>Best option.</b> 1T runs mainly when ships arrive, so it should be there for your 09:30 arrival.</div>
+          <ol class="mt-2 text-xs"><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums"></span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#16a34a"></span><span class="font-bold">Länsiterminaali 2</span><span class="ml-1 text-[10px] px-1 rounded bg-green-100 text-green-800 font-bold">GET ON</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">1</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Bunkkerinaukio</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">2</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Huutokonttori</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">3</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Hietalahti</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">4</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Hietalahdentori</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">5</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Aleksanterin teatteri</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">6</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Fredrikinkatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">7</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Erottaja</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">8</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Ylioppilastalo</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">9</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Simonkatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">10</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Kamppi (M)</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">11</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Hanken</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">12</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#dc2626"></span><span class="font-bold">Sammonkatu</span><span class="ml-1 text-[10px] px-1 rounded bg-red-100 text-red-800 font-bold">GET OFF</span></li></ol>
+        </div>
+      
+        <div class="rounded-lg border border-slate-200 p-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded px-2 py-0.5 text-white font-bold" style="background:#4d7c0f">🚋 8T</span>
+            <span class="text-sm">toward <b>Arabia</b> (shown on the tram's front)</span>
+            <span class="text-xs text-slate-500">· 8 stops</span>
+            <button class="no-print text-xs underline text-blue-700" onclick="showTram({ref:'8T',board:'Länsiterminaali 2',alight:'Arkadiankatu'})">🗺 show on map</button>
+          </div>
+          <div class="mt-1 text-xs text-slate-600">🚶 0 min → get on at <b>Länsiterminaali 2</b> · ride 8 stops · get off at <b>Arkadiankatu</b> → 🚶 5 min (300 m) to <b>the rock church</b><br>Backup if 1T is not there. Also a ship-arrival line.</div>
+          <ol class="mt-2 text-xs"><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums"></span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#16a34a"></span><span class="font-bold">Länsiterminaali 2</span><span class="ml-1 text-[10px] px-1 rounded bg-green-100 text-green-800 font-bold">GET ON</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">1</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Kanariankatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">2</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Saukonkatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">3</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Crusellinsilta</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">4</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Kaapelitehdas</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">5</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Ruoholahti (M)</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">6</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Itämerenkatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">7</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Maria</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">8</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#dc2626"></span><span class="font-bold">Arkadiankatu</span><span class="ml-1 text-[10px] px-1 rounded bg-red-100 text-red-800 font-bold">GET OFF</span></li></ol>
+        </div>
+    </div>
+    <div class="px-4 pt-2 text-xs text-slate-600">❗ <b>Neither tram there?</b> Take a Bolt (~€10, 10 min), or tram <b>7</b> (toward Meilahden sairaala) 6 stops to <b>Simonkatu</b>, then walk 12 min to the church.</div>
+
+    <div class="px-4 pt-4 font-bold text-slate-700">② 10:30 · Temppeliaukio → Kamppi Chapel <span class="text-xs font-normal text-slate-500">(optional; walking is 12 min)</span></div>
+    <div class="px-4 pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      
+        <div class="rounded-lg border border-slate-200 p-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded px-2 py-0.5 text-white font-bold" style="background:#2563eb">🚋 2</span>
+            <span class="text-sm">toward <b>Olympiaterminaali</b> (shown on the tram's front)</span>
+            <span class="text-xs text-slate-500">· 3 stops</span>
+            <button class="no-print text-xs underline text-blue-700" onclick="showTram({ref:'2',board:'Sammonkatu',alight:'Simonkatu'})">🗺 show on map</button>
+          </div>
+          <div class="mt-1 text-xs text-slate-600">🚶 2 min back to Sammonkatu → get on at <b>Sammonkatu</b> · ride 3 stops · get off at <b>Simonkatu</b> → 🚶 1 min to <b>Kamppi Chapel</b></div>
+          <ol class="mt-2 text-xs"><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums"></span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#16a34a"></span><span class="font-bold">Sammonkatu</span><span class="ml-1 text-[10px] px-1 rounded bg-green-100 text-green-800 font-bold">GET ON</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">1</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Hanken</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">2</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Kamppi (M)</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">3</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#dc2626"></span><span class="font-bold">Simonkatu</span><span class="ml-1 text-[10px] px-1 rounded bg-red-100 text-red-800 font-bold">GET OFF</span></li></ol>
+        </div>
+    </div>
+
+    <div class="px-4 pt-4 font-bold text-slate-700">③ 12:15 · Market Square → Suomenlinna <span class="text-xs font-normal text-slate-500">(ferry, not tram)</span></div>
+    <div class="px-4 pt-1 text-xs text-slate-600">⛴ The <b>HSL Suomenlinna ferry</b> leaves from the pier at the <b>east end of Market Square (Kauppatori)</b>, next to the Old Market Hall. 15 min, every 20–40 min, same HSL ticket. Come back the same way and get off at Market Square.</div>
+
+    <div class="px-4 pt-4 font-bold text-slate-700">④ 19:15 · Dinner / Uspenski → Katajanokka ferry terminal <span class="text-xs font-normal text-slate-500">(optional; walking is 8 min)</span></div>
+    <div class="px-4 pt-2 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+      
+        <div class="rounded-lg border border-slate-200 p-3">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="rounded px-2 py-0.5 text-white font-bold" style="background:#64748b">🚋 5</span>
+            <span class="text-sm">toward <b>Katajanokan terminaali</b> (shown on the tram's front)</span>
+            <span class="text-xs text-slate-500">· 2 stops</span>
+            <button class="no-print text-xs underline text-blue-700" onclick="showTram({ref:'5',board:'Tove Janssonin puisto',alight:'Katajanokan terminaali'})">🗺 show on map</button>
+          </div>
+          <div class="mt-1 text-xs text-slate-600">🚶 3 min downhill from Uspenski → get on at <b>Tove Janssonin puisto</b> · ride 2 stops · get off at <b>Katajanokan terminaali</b> → 🚶 1 min to <b>the Viking Line terminal</b><br>From a dinner on Katajanokka, get on at <b>Kauppiaankatu</b> instead (1 stop).</div>
+          <ol class="mt-2 text-xs"><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums"></span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#16a34a"></span><span class="font-bold">Tove Janssonin puisto</span><span class="ml-1 text-[10px] px-1 rounded bg-green-100 text-green-800 font-bold">GET ON</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">1</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#cbd5e1"></span><span class="text-slate-500">Kauppiaankatu</span></li><li class="flex items-center gap-2 h-5"><span class="w-5 text-right text-[10px] text-slate-400 tabular-nums">2</span><span class="inline-block w-2.5 h-2.5 rounded-full" style="background:#dc2626"></span><span class="font-bold">Katajanokan terminaali</span><span class="ml-1 text-[10px] px-1 rounded bg-red-100 text-red-800 font-bold">GET OFF</span></li></ol>
+        </div>
+    </div>
+  </section>
+
   <a class="no-print block text-center rounded-lg px-4 py-2 font-semibold text-white bg-emerald-600 hover:bg-emerald-700"
      href="https://www.google.com/maps/dir/West+Harbour+Terminal+2+Helsinki/Temppeliaukio+Church/Kamppi+Chapel/Oodi+Helsinki/Esplanadi+Helsinki/Old+Market+Hall+Helsinki/Suomenlinna/Senate+Square+Helsinki/Uspenski+Cathedral/Katajanokka+Terminal+Helsinki"
      target="_blank" rel="noopener">📍 Open the whole route in Google Maps</a>
